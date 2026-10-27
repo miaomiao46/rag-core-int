@@ -9,7 +9,7 @@ services:
         # 默认使用已验证可拉取的 amd64 组合，优先保证跨架构构建成功。
         BUILDER_IMAGE: ${BUILDER_IMAGE:-maven:3.9.11-eclipse-temurin-25}
         RUNTIME_IMAGE: ${RUNTIME_IMAGE:-eclipse-temurin:25-jre}
-        APP_VERSION: ${APP_VERSION:-0.2.9}
+        APP_VERSION: ${APP_VERSION:-0.2.11}
     image: rag-core-int:test
     restart: unless-stopped
     ports:

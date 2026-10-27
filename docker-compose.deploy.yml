@@ -1,7 +1,7 @@
 services:
   rag-core-int:
     container_name: rag-core-int
-    image: ${APP_IMAGE:-rag-core-int:0.2.9-amd64}
+    image: ${APP_IMAGE:-rag-core-int:0.2.11-amd64}
     platform: ${DOCKER_PLATFORM:-linux/amd64}
     restart: unless-stopped
     ports:
