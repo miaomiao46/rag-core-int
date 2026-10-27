@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ public class ElasticsearchSearchClient {
 
     private final RestClient restClient;
 
+    @Autowired
     public ElasticsearchSearchClient(
             RestClient.Builder restClientBuilder,
             RetrievalHttpClientProperties httpClientProperties,
