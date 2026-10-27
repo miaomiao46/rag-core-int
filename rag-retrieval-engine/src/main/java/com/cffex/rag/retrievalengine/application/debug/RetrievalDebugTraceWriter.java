@@ -249,6 +249,9 @@ public class RetrievalDebugTraceWriter {
         if (event != null && event.startsWith("milvus.")) {
             return "milvus";
         }
+        if (event != null && event.startsWith("elasticsearch.")) {
+            return "elasticsearch";
+        }
         return "retrieval-engine";
     }
 
@@ -259,7 +262,7 @@ public class RetrievalDebugTraceWriter {
         if (event.startsWith("embedding.")) {
             return "embedding";
         }
-        if (event.startsWith("milvus.") || event.startsWith("kb.") || event.startsWith("recall.")) {
+        if (event.startsWith("milvus.") || event.startsWith("elasticsearch.") || event.startsWith("kb.") || event.startsWith("recall.")) {
             return "recall";
         }
         if (event.contains("rerank")) {

@@ -23,7 +23,8 @@ COPY rag-metadata-cacher/src /workspace/rag-metadata-cacher/src
 COPY rag-query-planner/src /workspace/rag-query-planner/src
 COPY rag-retrieval-engine/src /workspace/rag-retrieval-engine/src
 
-RUN mvn -pl app -am clean package -DskipTests
+RUN mvn -pl app -am clean package -DskipTests \
+    && cp app/target/app-*.jar /workspace/app.jar
 
 FROM --platform=$BUILDPLATFORM ${RUNTIME_IMAGE} AS extractor
 
@@ -31,7 +32,8 @@ ARG APP_VERSION
 
 WORKDIR /work
 
-COPY --from=builder /workspace/app/target/app-${APP_VERSION}-SNAPSHOT.jar /work/app.jar
+# jar 名由 pom 版本决定，这里不依赖 APP_VERSION，避免两者不一致时找不到文件。
+COPY --from=builder /workspace/app.jar /work/app.jar
 
 RUN mkdir -p /layers \
     && java -Djarmode=layertools -jar /work/app.jar extract --destination /layers

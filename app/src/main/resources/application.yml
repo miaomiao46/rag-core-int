@@ -94,6 +94,17 @@ milvus:
   metadata-field-name: metadata
   embedding-field-name: vector
 
+elasticsearch:
+  uri: http://127.0.0.1:9200
+  username: elastic
+  password: elastic
+  # 字段映射与 Dify ElasticSearchVector 建索引时的 mapping 一致。
+  content-field-name: page_content
+  metadata-field-name: metadata
+  embedding-field-name: vector
+  # Dify ES 实现不按 score_threshold 过滤 dense 结果，默认保持一致；置 true 则在适配器层过滤。
+  dense-score-threshold-enabled: false
+
 query-planner:
   default-plan-type: standard_retrieval
   defaults:

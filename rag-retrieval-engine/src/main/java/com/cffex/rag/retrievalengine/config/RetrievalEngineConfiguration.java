@@ -13,10 +13,11 @@ import com.cffex.rag.retrievalengine.domain.service.KnowledgeBaseRecallDomainSer
 import io.milvus.v2.client.ConnectConfig;
 import io.milvus.v2.client.MilvusClientV2;
 
-/** retrieval-engine 基础装配：负责 Milvus SDK 客户端实例化。 */
+/** retrieval-engine 基础装配：负责 Milvus SDK 客户端实例化与向量库配置绑定。 */
 @Configuration
 @EnableConfigurationProperties({
         MilvusProperties.class,
+        ElasticsearchProperties.class,
         ChatProperties.class,
         RetrievalDebugTraceProperties.class,
         RetrievalHttpClientProperties.class

@@ -1,5 +1,6 @@
 package com.cffex.rag.metadatacacher.infrastructure.persistence;
 
+import com.cffex.rag.common.domain.metadata.KnowledgeBaseMeta;
 import com.cffex.rag.common.domain.metadata.ModelType;
 import com.cffex.rag.common.domain.metadata.RetrievalMode;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 final class MetadataConverter {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final String ELASTICSEARCH_ENGINE_ID = "elasticsearch";
 
     private MetadataConverter() {
     }
@@ -45,6 +47,21 @@ final class MetadataConverter {
             return RetrievalMode.FULL_TEXT;
         }
         return RetrievalMode.SEMANTIC;
+    }
+
+    /**
+     * 把 Dify {@code index_struct.type}（如 milvus、elasticsearch、elasticsearch-zh）映射为检索引擎 ID。
+     * 缺省时回退到默认引擎；未识别的类型原样透传，由检索阶段的引擎注册表报出明确错误。
+     */
+    static String toEngineId(String vectorStoreType) {
+        if (vectorStoreType == null || vectorStoreType.isBlank()) {
+            return KnowledgeBaseMeta.DEFAULT_VECTOR_ENGINE_ID;
+        }
+        String normalized = vectorStoreType.trim().toLowerCase(java.util.Locale.ROOT);
+        if (normalized.startsWith("elasticsearch")) {
+            return ELASTICSEARCH_ENGINE_ID;
+        }
+        return normalized;
     }
 
     static String extractUploadFileId(String dataSourceInfo) {

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import org.junit.jupiter.api.Test;
 
 import com.cffex.rag.common.domain.metadata.BusinessDomain;
+import com.cffex.rag.common.domain.metadata.KnowledgeBaseMeta;
 import com.cffex.rag.common.domain.retrieval.RetrievalCapability;
 import com.cffex.rag.metadatacacher.config.MetadataCacherProperties;
 import com.cffex.rag.metadatacacher.domain.MetadataPayload;
@@ -27,9 +28,10 @@ class DifyMetadataSourceTest {
         properties.getDify().setDomainMappings(List.of(rdDataDomain));
 
         FakeDatasetMapper datasetMapper = new FakeDatasetMapper(List.of(
-                new DifyDatasetMapper.DatasetRow("kb-1", "知识库一", "hybrid_search", "collection-1", true,
+                new DifyDatasetMapper.DatasetRow("kb-1", "知识库一", "hybrid_search", "Vector_index_kb_1_Node",
+                        "elasticsearch-zh", true,
                         15, true, true, 0.4d, 0.8d, 0.2d),
-                new DifyDatasetMapper.DatasetRow("kb-2", "知识库二", "hybrid_search", "collection-2", true,
+                new DifyDatasetMapper.DatasetRow("kb-2", "知识库二", "hybrid_search", "collection-2", null, true,
                         null, false, false, 0.0d, 0.7d, 0.3d)
         ));
         FakeDocumentMapper documentMapper = new FakeDocumentMapper(List.of(
@@ -83,9 +85,15 @@ class DifyMetadataSourceTest {
                         .toList()
         );
         assertEquals(
-                "collection-1",
+                "Vector_index_kb_1_Node",
                 payload.knowledgeBasesById().get("kb-1").bindingOf(RetrievalCapability.VECTOR).targetName()
         );
+        assertEquals("elasticsearch", payload.knowledgeBasesById().get("kb-1").vectorEngineId());
+        assertEquals("elasticsearch", payload.knowledgeBasesById().get("kb-1").fullTextEngineId());
+        assertEquals("elasticsearch",
+                payload.knowledgeBasesById().get("kb-1").bindingOf(RetrievalCapability.FULL_TEXT).engineId());
+        assertEquals(KnowledgeBaseMeta.DEFAULT_VECTOR_ENGINE_ID,
+                payload.knowledgeBasesById().get("kb-2").vectorEngineId());
     }
 
     @Test

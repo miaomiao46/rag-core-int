@@ -75,6 +75,10 @@ public class DifyMetadataSource implements MetadataSource {
                         row.datasetId(),
                         MetadataConverter.toRetrievalMode(row.retrievalMode()),
                         row.collectionName(),
+                        // dense 与全文检索走同一个 Dify 向量库，按 index_struct.type 路由到对应引擎
+                        MetadataConverter.toEngineId(row.vectorStoreType()),
+                        MetadataConverter.toEngineId(row.vectorStoreType()),
+                        null,
                         row.enabled(),
                         row.topK(),
                         row.rerankingEnabled(),

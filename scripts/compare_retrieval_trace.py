@@ -427,13 +427,13 @@ def collect_datasets(events: list[dict[str, Any]]) -> dict[str, DatasetTrace]:
         if not dataset_id:
             continue
         trace = datasets.setdefault(dataset_id, DatasetTrace(dataset_id=dataset_id))
-        if name == "milvus.dense.request":
+        if name in ("milvus.dense.request", "elasticsearch.dense.request"):
             trace.dense.request = request
-        elif name == "milvus.sparse.request":
+        elif name in ("milvus.sparse.request", "elasticsearch.sparse.request"):
             trace.sparse.request = request
-        elif name == "milvus.dense.response":
+        elif name in ("milvus.dense.response", "elasticsearch.dense.response"):
             trace.dense.response = payload
-        elif name == "milvus.sparse.response":
+        elif name in ("milvus.sparse.response", "elasticsearch.sparse.response"):
             trace.sparse.response = payload
     return datasets
 
